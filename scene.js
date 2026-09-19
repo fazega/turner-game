@@ -1,3 +1,4 @@
+import {createTouchControls} from './touch-controls.js';
 import {createCompass} from './compass.js';
 import {welcomePlayer} from './welcome.js';
 import {installKeyboardLabels} from './keyboard.js';
@@ -83,18 +84,20 @@ function land(){
   }if(!found)camera.position.set(7,2.25,29);
  }camera.position.y=2.25;
 }
-let yaw=.13,pitch=.055,flying=false,drag=false,jumpHeight=0,jumpVelocity=0;const keys=new Set();
+let yaw=.13,pitch=.055,flying=false,drag=false,jumpHeight=0,jumpVelocity=0;const keys=new Set(),touchKeys=new Set();const isDown=code=>keys.has(code)||touchKeys.has(code);
 camera.rotation.order='YXZ';
 function reset(){camera.position.set(7,2.25,29);yaw=.13;pitch=.055;flying=false;jumpHeight=jumpVelocity=0;keys.clear()}
 function setView(position,target,fly=true){camera.position.set(...position);camera.lookAt(...target);yaw=camera.rotation.y;pitch=camera.rotation.x;flying=fly;jumpHeight=jumpVelocity=0;keys.clear()}
 reset();
-const quest=createQuest({scene,camera,characters,canvas:renderer.domElement,clearMovement:()=>keys.clear(),setView,getFlying:()=>flying});
+const quest=createQuest({scene,camera,characters,canvas:renderer.domElement,clearMovement:()=>{keys.clear();touchKeys.clear()},setView,getFlying:()=>flying});
 for(const npc of quest.npcs)obstacles.push({x:npc.root.position.x,z:npc.root.position.z,w:.55,d:.55});
+const touchControls=createTouchControls({held:touchKeys,canPlay:()=>enteredWorld&&!quest.eclipse.isOpen(),onPress:code=>{if(quest.isOpen())quest.close();if(code==='Space'&&!flying&&jumpHeight===0){jumpVelocity=5.8;jumpHeight=.001}}});
 let pointerStart=null,dragDistance=0;
-renderer.domElement.addEventListener('pointerdown',e=>{if(!enteredWorld||quest.isOpen())return;drag=true;pointerStart={x:e.clientX,y:e.clientY,button:e.button};dragDistance=0;renderer.domElement.setPointerCapture(e.pointerId)});
-addEventListener('pointermove',e=>{if(drag&&!quest.isOpen()){dragDistance+=Math.abs(e.movementX)+Math.abs(e.movementY);yaw-=e.movementX*.002;pitch=Math.max(-1.4,Math.min(1.4,pitch-e.movementY*.002))}});
-renderer.domElement.addEventListener('pointerup',e=>{const click=pointerStart?.button===0&&dragDistance<6;drag=false;pointerStart=null;if(renderer.domElement.hasPointerCapture(e.pointerId))renderer.domElement.releasePointerCapture(e.pointerId);if(click)quest.interact(true)});
-renderer.domElement.addEventListener('pointercancel',()=>{drag=false;pointerStart=null});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
+renderer.domElement.style.touchAction='none';
+renderer.domElement.addEventListener('pointerdown',e=>{if(!enteredWorld||quest.isOpen()||pointerStart)return;drag=true;pointerStart={id:e.pointerId,x:e.clientX,y:e.clientY,button:e.button};dragDistance=0;renderer.domElement.setPointerCapture(e.pointerId)});
+addEventListener('pointermove',e=>{if(drag&&pointerStart?.id===e.pointerId&&!quest.isOpen()){const dx=e.clientX-pointerStart.x,dy=e.clientY-pointerStart.y;pointerStart.x=e.clientX;pointerStart.y=e.clientY;dragDistance+=Math.abs(dx)+Math.abs(dy);yaw-=dx*.002;pitch=Math.max(-1.4,Math.min(1.4,pitch-dy*.002))}});
+renderer.domElement.addEventListener('pointerup',e=>{if(pointerStart?.id!==e.pointerId)return;const click=pointerStart.button===0&&dragDistance<6;drag=false;pointerStart=null;if(renderer.domElement.hasPointerCapture(e.pointerId))renderer.domElement.releasePointerCapture(e.pointerId);if(click)quest.interact(true)});
+renderer.domElement.addEventListener('pointercancel',e=>{if(pointerStart?.id===e.pointerId){drag=false;pointerStart=null}});addEventListener('blur',()=>{drag=false;pointerStart=null});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('keydown',e=>{
  if(!enteredWorld)return;
  if(quest.keydown(e)){if(e.code!=='Tab'&&e.code!=='Enter')e.preventDefault();return}
@@ -114,7 +117,7 @@ const envScene=new T.Scene();const envSky=scene.getObjectByName('Painted cloud s
 const quality=createQualityController(renderer,water,sun);
 const compass=createCompass();
 loading(92,'Preparing the view');await new Promise(requestAnimationFrame);await renderer.compileAsync(scene,camera);
-const clock=new T.Clock();let frames=0;function animate(){requestAnimationFrame(animate);let elapsed=clock.getDelta(),dt=Math.min(elapsed,.05),time=clock.elapsedTime;quality.tick(elapsed);let forward=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),side=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let speed=((keys.has('ShiftLeft')||keys.has('ShiftRight'))?7:4.6)*dt;if(forward&&side){forward*=.707;side*=.707}let nx=camera.position.x+(-Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed,nz=camera.position.z+(-Math.cos(yaw)*forward-Math.sin(yaw)*side)*speed;if(flying){camera.position.x=nx;camera.position.z=nz;camera.position.y=Math.max(1,Math.min(90,camera.position.y+(keys.has('Space')?speed:0)-(keys.has('KeyC')?speed:0)+forward*Math.sin(pitch)*speed))}else{const valid=canWalk;if(valid(nx,camera.position.z))camera.position.x=nx;if(valid(camera.position.x,nz))camera.position.z=nz;if(jumpHeight>0||jumpVelocity>0){jumpHeight+=jumpVelocity*dt-9*dt*dt;jumpVelocity-=18*dt;if(jumpHeight<=0){jumpHeight=0;jumpVelocity=0}}camera.position.y=2.25+jumpHeight+(jumpHeight===0&&(forward||side)?Math.sin(time*9)*.035:0)}camera.rotation.set(pitch,yaw,0);water.material.uniforms.time.value=time;sailTime.value=time;assets.windTime.value=time;atmosphere.time.value=time;ships.forEach((g,i)=>{g.rotation.z=Math.sin(time*.45+i)*.009;g.position.y=g.userData.baseY+Math.sin(time*.6+i)*.06});landscape.update(time);flock.update(time);characters.update(time,camera);activity.update(time,camera);if(enteredWorld)quest.update(time);compass.update(camera.rotation.y);renderer.info.reset();renderer.render(scene,camera);frames++;}animate();
+const clock=new T.Clock();let frames=0;function animate(){requestAnimationFrame(animate);let elapsed=clock.getDelta(),dt=Math.min(elapsed,.05),time=clock.elapsedTime;quality.tick(elapsed);let forward=(isDown('KeyW')||isDown('ArrowUp')?1:0)-(isDown('KeyS')||isDown('ArrowDown')?1:0),side=(isDown('KeyD')||isDown('ArrowRight')?1:0)-(isDown('KeyA')||isDown('ArrowLeft')?1:0);let speed=((isDown('ShiftLeft')||isDown('ShiftRight'))?7:4.6)*dt;if(forward&&side){forward*=.707;side*=.707}let nx=camera.position.x+(-Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed,nz=camera.position.z+(-Math.cos(yaw)*forward-Math.sin(yaw)*side)*speed;if(flying){camera.position.x=nx;camera.position.z=nz;camera.position.y=Math.max(1,Math.min(90,camera.position.y+(isDown('Space')?speed:0)-(isDown('KeyC')?speed:0)+forward*Math.sin(pitch)*speed))}else{const valid=canWalk;if(valid(nx,camera.position.z))camera.position.x=nx;if(valid(camera.position.x,nz))camera.position.z=nz;if(jumpHeight>0||jumpVelocity>0){jumpHeight+=jumpVelocity*dt-9*dt*dt;jumpVelocity-=18*dt;if(jumpHeight<=0){jumpHeight=0;jumpVelocity=0}}camera.position.y=2.25+jumpHeight+(jumpHeight===0&&(forward||side)?Math.sin(time*9)*.035:0)}camera.rotation.set(pitch,yaw,0);water.material.uniforms.time.value=time;sailTime.value=time;assets.windTime.value=time;atmosphere.time.value=time;ships.forEach((g,i)=>{g.rotation.z=Math.sin(time*.45+i)*.009;g.position.y=g.userData.baseY+Math.sin(time*.6+i)*.06});landscape.update(time);flock.update(time);characters.update(time,camera);activity.update(time,camera);if(enteredWorld)quest.update(time);compass.update(camera.rotation.y);renderer.info.reset();renderer.render(scene,camera);frames++;}animate();
 // The first rendered frame and shader preparation finish before entry is enabled.
 loading(100,'The harbour awaits');
 const enterButton=document.getElementById('enter-world');

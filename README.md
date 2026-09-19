@@ -56,3 +56,5 @@ The southwest garden edge transitions to a sloped sandy beach with a wet-sand ba
 
 The opening screen displays the supplied painting while assets and shaders load. ENTER unlocks after the first scene render; movement and interactions begin only after entry. The screen is shown on every load so returning players also enter deliberately after loading finishes.
 
+
+On phones and tablets with a primary touch pointer, a directional pad and jump button appear after entry. Drag the scene with another finger to look around while moving. Tap nearby characters to speak. The controls hide on desktop and during eclipse viewing.

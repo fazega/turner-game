@@ -53,7 +53,7 @@ export function createQuest({scene,camera,characters,canvas,clearMovement,setVie
   $('dialogue-title').textContent=npc.name;$('speech').textContent=text;$('choices').replaceChildren();if(!choices.length)choices=[{label:'Until we meet again.',action:close}];else if(choices.length===1)choices.push({label:'I’ll return shortly.',action:close});
   choices.forEach((c,i)=>{const b=document.createElement('button'),key=document.createElement('kbd'),label=document.createElement('span');key.textContent=String(i+1);key.setAttribute('aria-hidden','true');label.textContent=c.label;b.append(key,label);b.setAttribute('aria-keyshortcuts',String(i+1));b.onclick=c.action;$('choices').append(b)});$('choices').firstElementChild.focus({preventScroll:true});
  }
- canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1)});canvas.addEventListener('pointerleave',()=>mouse.set(2,2));
+ function trackPointer(e){const r=canvas.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1)}canvas.addEventListener('pointermove',trackPointer);canvas.addEventListener('pointerdown',trackPointer);canvas.addEventListener('pointerleave',()=>mouse.set(2,2));
  function pick(){ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(hitboxes,false)[0];return hit?npcs.find(n=>n.id===hit.object.userData.id):null}
  function interact(click=false){if(eclipse.isOpen()||!dialog.hidden)return;let npc=click?pick():npcs.reduce((a,n)=>!a||distance(n)<distance(a)?n:a,null);if(npc&&(click||distance(npc)<=4.8))show(npc)}
  function keydown(e){
