@@ -51,3 +51,5 @@ Walking, idle and conversation gestures use retargeted Quaternius CC0 animation 
 Harbour activity includes two fish stalls with silent market-call captions, three children playing chase, two carpenters, two anglers with moving lines, and six garden pedestrians following the sloped paths behind the fence. Arcade characters and collision boundaries clear the columns. `activity-verification.json` and `quest-tracker-verification.json` record the activity and tracker checks.
 
 The southwest garden edge transitions to a sloped sandy beach with a wet-sand band, calmer shallows and shoreline foam. The rear town has detailed window frames, shutters, roof courses, chimney pots, doors, flower boxes, balconies and lamps. Stationary characters use four relaxed stance variants instead of the shared wide-legged idle pose.
+
+The opening screen displays the supplied painting while assets and shaders load. ENTER unlocks after the first scene render; movement and interactions begin only after entry. The screen is shown on every load so returning players also enter deliberately after loading finishes.

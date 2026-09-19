@@ -14,3 +14,5 @@ Character models: [Universal Base Characters](https://quaternius.com/packs/unive
 
 ## Character animation
 Quaternius Universal Animation Library (Standard), CC0. Walking, idle and talking clips retargeted and reduced to the required tracks. https://quaternius.itch.io/universal-animation-library — downloaded from the creator’s OpenGameArt release: https://opengameart.org/content/universal-animation-library . License bundled in assets/characters/Animation-License.txt.
+
+Opening painting: reference image supplied by the user, bundled as assets/harbour-painting.png.
