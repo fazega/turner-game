@@ -29,7 +29,7 @@ export function createAtmosphere(scene){
   const sky=new T.Mesh(new T.SphereGeometry(480,40,24),material);sky.name='Painted cloud sky';scene.add(sky);
   const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const ctx=canvas.getContext('2d');
   const g=ctx.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,230,167,.65)');g.addColorStop(.16,'rgba(255,221,137,.23)');g.addColorStop(1,'rgba(255,218,128,0)');ctx.fillStyle=g;ctx.fillRect(0,0,128,128);
-  const glow=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(canvas),transparent:true,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false,fog:false}));glow.position.set(-230,52.9,-529);glow.scale.set(149.5,149.5,1);scene.add(glow);
+  const glow=new T.Sprite(new T.SpriteMaterial({map:new T.CanvasTexture(canvas),transparent:true,depthWrite:false,blending:T.AdditiveBlending,toneMapped:false,fog:false}));glow.name='Solar haze';glow.position.set(-230,52.9,-529);glow.scale.set(149.5,149.5,1);scene.add(glow);
   const disc=new T.Mesh(new T.SphereGeometry(5.06,24,16),new T.MeshBasicMaterial({color:'#fff4cd',toneMapped:false,fog:false}));disc.position.copy(glow.position);scene.add(disc);
   return {time};
 }

@@ -1,4 +1,4 @@
-# The Golden Harbour — The Last Light
+# The Golden Harbour — The Wandering Light
 
 A small exploration game inside the harbor painting. All models, materials and runtime code are bundled locally.
 
@@ -14,21 +14,23 @@ Open http://127.0.0.1:8765. To restart the server, run `node server.cjs` from th
 
 ## Play
 
-Walk toward **Mira**, the harbor warden beside the lantern. Click a nearby named character or press **E** to talk. Follow the conversations with **Tomas** and **Inez**, then return to Mira to restore the beacon. The always-visible quest tracker shows the current step and immediate objective; progress saves in this browser. Unfinished adventures resume on reload; completed adventures restart with an unlit beacon. Completing the quest lights the actual lantern and awards the Keeper of the Evening Light token.
+Walk toward **Mira**, beside the gathering on the quay. Ask **Tomas** what the approaching eclipse means to sailors, then ask **Inez** what causes it. Report both perspectives to Mira to receive her eclipse glasses. The glasses zoom toward the Sun; watch for a small ringed world and tell Mira what you see. She welcomes you as a future pupil. This discovery is a fantasy story in a harbour inspired by Claude Lorrain’s *Port Scene with the Villa Medici*, rather than a reconstruction of a historical astronomical event.
+
+The six-step quest saves in this browser. Movement closes ordinary dialogue; **Esc** lowers the glasses and restores the previous viewpoint. Completed players may return to Mira to look again.
 
 ## Controls
 
 - **W A S D / Z Q S D**: move. The Commands panel automatically detects QWERTY or AZERTY using the browser keyboard map, with actual key presses as a fallback. Arrow keys also work. **Shift**: move at 7 m/s (normal walking: 4.6 m/s).
 - **Drag the mouse**: look around. The fantasy cursor stays visible; the game does not capture or hide it.
 - **Click a person / E**: interact within reach.
-- **Esc**: close dialogue. **Tab / Enter** or **1 / 2** also operate dialogue choices.
+- **Esc**: close dialogue. **Tab / Enter** or **1 / 2 / 3 / 4** also operate dialogue choices.
 - **Space**: jump while walking; holding it does not repeatedly jump.
 - **F**: switch walking and flight. **Space / C**: rise and descend while flying.
 - **R**: return to the starting viewpoint; quest progress is preserved.
 - Hover **Commands** in the bottom-left to open the small controls panel, or press **H**.
 - The left quest tracker stays visible: yellow **Ongoing**, green **Completed**.
 
-Sound, entry buttons, top controls, and viewpoint buttons have been removed. Rendering quality adjusts automatically.
+Sound, top controls, and viewpoint buttons have been removed. Rendering quality adjusts automatically.
 
 ## Scene and testing
 
@@ -53,3 +55,5 @@ Harbour activity includes two fish stalls with silent market-call captions, thre
 The southwest garden edge transitions to a sloped sandy beach with a wet-sand band, calmer shallows and shoreline foam. The rear town has detailed window frames, shutters, roof courses, chimney pots, doors, flower boxes, balconies and lamps. Stationary characters use four relaxed stance variants instead of the shared wide-legged idle pose.
 
 The opening screen displays the supplied painting while assets and shaders load. ENTER unlocks after the first scene render; movement and interactions begin only after entry. The screen is shown on every load so returning players also enter deliberately after loading finishes.
+
+The opening composition groups twenty additional spectators and working figures around a landing boat, nets, oars, clay bowls, sailcloth and tied cargo. Women wear pleated overskirts, some observers wear capes or hats, and the groups watch, point, converse or kneel at their work.

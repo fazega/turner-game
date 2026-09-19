@@ -2,10 +2,12 @@
   "name": "turner-game",
   "version": "1.0.0",
   "private": true,
-  "description": "The Last Light — an explorable painted harbour",
+  "description": "The Wandering Light — an explorable harbour inspired by Claude Lorrain",
   "scripts": {
     "build": "node scripts/build.cjs",
     "start": "node server.cjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

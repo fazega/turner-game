@@ -1,3 +1,4 @@
+import {addPaintingTableau} from './painting-tableau.js';
 import {welcomePlayer} from './welcome.js';
 import {installKeyboardLabels} from './keyboard.js';
 import * as T from './three.module.js';
@@ -70,6 +71,7 @@ for(let x=-70;x<33;x+=10){cyl(x,.7,10.8,.18,1,wood);cyl(x,1.15,10.8,.25,.1,dark)
 const harbourLife=enrichHarbour({scene,details,box,cyl,line,wood,rope,trim,rand});
 obstacles.push({x:33,z:39,w:2.5,d:1.0});
 const activity=addHarbourActivity({scene,characters,details,box,cyl,line,wood,rope,trim,rand,obstacles});
+const tableau=addPaintingTableau({scene,characters,details,box,line,wood,rope,obstacles});
 const flock=createBirds(scene);
 for(const t of trees)obstacles.push({x:t.x,z:t.z,w:1.6,d:1.6});
 for(let i=0;i<8;i++)obstacles.push({x:31.8,z:-9-i*5.3,w:.72,d:.72});
@@ -84,10 +86,10 @@ function land(){
 }
 let yaw=.13,pitch=.055,flying=false,drag=false,jumpHeight=0,jumpVelocity=0;const keys=new Set();
 camera.rotation.order='YXZ';
-function reset(){camera.position.set(7,2.25,29);yaw=.13;pitch=.055;flying=false;jumpHeight=jumpVelocity=0;keys.clear()}
+function reset(){camera.position.set(8,2.25,38);yaw=.18;pitch=.12;flying=false;jumpHeight=jumpVelocity=0;keys.clear()}
 function setView(position,target,fly=true){camera.position.set(...position);camera.lookAt(...target);yaw=camera.rotation.y;pitch=camera.rotation.x;flying=fly;jumpHeight=jumpVelocity=0;keys.clear()}
 reset();
-const quest=createQuest({scene,camera,characters,canvas:renderer.domElement,clearMovement:()=>keys.clear()});
+const quest=createQuest({scene,camera,characters,canvas:renderer.domElement,clearMovement:()=>keys.clear(),setView,getFlying:()=>flying});
 for(const npc of quest.npcs)obstacles.push({x:npc.root.position.x,z:npc.root.position.z,w:.55,d:.55});
 let pointerStart=null,dragDistance=0;
 renderer.domElement.addEventListener('pointerdown',e=>{if(!enteredWorld||quest.isOpen())return;drag=true;pointerStart={x:e.clientX,y:e.clientY,button:e.button};dragDistance=0;renderer.domElement.setPointerCapture(e.pointerId)});
@@ -112,7 +114,7 @@ scene.traverse(o=>{if(o.isMesh&&!o.userData.keepDynamic&&!ships.some(s=>s===o.pa
 const envScene=new T.Scene();const envSky=scene.getObjectByName('Painted cloud sky').clone();envScene.add(envSky);const pmrem=new T.PMREMGenerator(renderer);const envTarget=pmrem.fromScene(envScene,.03,.1,600);scene.environment=envTarget.texture;scene.environmentIntensity=.4;pmrem.dispose();
 const quality=createQualityController(renderer,water,sun);
 loading(92,'Preparing the view');await new Promise(requestAnimationFrame);await renderer.compileAsync(scene,camera);
-const clock=new T.Clock();let frames=0;function animate(){requestAnimationFrame(animate);let elapsed=clock.getDelta(),dt=Math.min(elapsed,.05),time=clock.elapsedTime;quality.tick(elapsed);let forward=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),side=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let speed=((keys.has('ShiftLeft')||keys.has('ShiftRight'))?7:4.6)*dt;if(forward&&side){forward*=.707;side*=.707}let nx=camera.position.x+(-Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed,nz=camera.position.z+(-Math.cos(yaw)*forward-Math.sin(yaw)*side)*speed;if(flying){camera.position.x=nx;camera.position.z=nz;camera.position.y=Math.max(1,Math.min(90,camera.position.y+(keys.has('Space')?speed:0)-(keys.has('KeyC')?speed:0)+forward*Math.sin(pitch)*speed))}else{const valid=canWalk;if(valid(nx,camera.position.z))camera.position.x=nx;if(valid(camera.position.x,nz))camera.position.z=nz;if(jumpHeight>0||jumpVelocity>0){jumpHeight+=jumpVelocity*dt-9*dt*dt;jumpVelocity-=18*dt;if(jumpHeight<=0){jumpHeight=0;jumpVelocity=0}}camera.position.y=2.25+jumpHeight+(jumpHeight===0&&(forward||side)?Math.sin(time*9)*.035:0)}camera.rotation.set(pitch,yaw,0);water.material.uniforms.time.value=time;sailTime.value=time;assets.windTime.value=time;atmosphere.time.value=time;ships.forEach((g,i)=>{g.rotation.z=Math.sin(time*.45+i)*.009;g.position.y=g.userData.baseY+Math.sin(time*.6+i)*.06});landscape.update(time);flock.update(time);characters.update(time,camera);activity.update(time,camera);if(enteredWorld)quest.update(time);renderer.info.reset();renderer.render(scene,camera);frames++;}animate();
+const clock=new T.Clock();let frames=0;function animate(){requestAnimationFrame(animate);let elapsed=clock.getDelta(),dt=Math.min(elapsed,.05),time=clock.elapsedTime;quality.tick(elapsed);let forward=(keys.has('KeyW')||keys.has('ArrowUp')?1:0)-(keys.has('KeyS')||keys.has('ArrowDown')?1:0),side=(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0);let speed=((keys.has('ShiftLeft')||keys.has('ShiftRight'))?7:4.6)*dt;if(forward&&side){forward*=.707;side*=.707}let nx=camera.position.x+(-Math.sin(yaw)*forward+Math.cos(yaw)*side)*speed,nz=camera.position.z+(-Math.cos(yaw)*forward-Math.sin(yaw)*side)*speed;if(flying){camera.position.x=nx;camera.position.z=nz;camera.position.y=Math.max(1,Math.min(90,camera.position.y+(keys.has('Space')?speed:0)-(keys.has('KeyC')?speed:0)+forward*Math.sin(pitch)*speed))}else{const valid=canWalk;if(valid(nx,camera.position.z))camera.position.x=nx;if(valid(camera.position.x,nz))camera.position.z=nz;if(jumpHeight>0||jumpVelocity>0){jumpHeight+=jumpVelocity*dt-9*dt*dt;jumpVelocity-=18*dt;if(jumpHeight<=0){jumpHeight=0;jumpVelocity=0}}camera.position.y=2.25+jumpHeight+(jumpHeight===0&&(forward||side)?Math.sin(time*9)*.035:0)}camera.rotation.set(pitch,yaw,0);water.material.uniforms.time.value=time;sailTime.value=time;assets.windTime.value=time;atmosphere.time.value=time;ships.forEach((g,i)=>{g.rotation.z=Math.sin(time*.45+i)*.009;g.position.y=g.userData.baseY+Math.sin(time*.6+i)*.06});landscape.update(time);flock.update(time);characters.update(time,camera);tableau.update(time);activity.update(time,camera);if(enteredWorld)quest.update(time);renderer.info.reset();renderer.render(scene,camera);frames++;}animate();
 // The first rendered frame and shader preparation finish before entry is enabled.
 loading(100,'The harbour awaits');
 const enterButton=document.getElementById('enter-world');
