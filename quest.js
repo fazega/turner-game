@@ -87,6 +87,6 @@ export function createQuest({scene,camera,characters,canvas,clearMovement}){
  // Soft contact shadows keep feet and the lantern base grounded as characters turn.
  const sc=document.createElement('canvas');sc.width=sc.height=64;const sx=sc.getContext('2d'),sg=sx.createRadialGradient(32,32,1,32,32,32);sg.addColorStop(0,'rgba(22,19,12,.42)');sg.addColorStop(.4,'rgba(22,19,12,.25)');sg.addColorStop(1,'rgba(22,19,12,0)');sx.fillStyle=sg;sx.fillRect(0,0,64,64);
  const sm=new T.MeshBasicMaterial({map:new T.CanvasTexture(sc),transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2});for(const root of [...npcs.map(n=>n.root),beacon]){const shadow=new T.Mesh(new T.PlaneGeometry(.85,.65),sm);shadow.rotation.x=-Math.PI/2;shadow.position.set(root.position.x,.343,root.position.z);scene.add(shadow)}
- sync();setTimeout(()=>toast(stage===0?'The Last Light · Meet Mira beside the quay lantern.':objectives[stage]),1800);
+ sync();
  return {update,interact,keydown,close,isOpen:()=>!dialog.hidden,npcs,beacon,getState:()=>({stage,objective:objectives[stage],inventory:inventory[stage],completed:stage===4,dialogue:current?.id??null,beaconLit:glow.visible})};
 }

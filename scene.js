@@ -1,3 +1,4 @@
+import {welcomePlayer} from './welcome.js';
 import {installKeyboardLabels} from './keyboard.js';
 import * as T from './three.module.js';
 import { material, materialStats } from './materials.js';
@@ -116,6 +117,6 @@ const clock=new T.Clock();let frames=0;function animate(){requestAnimationFrame(
 loading(100,'The harbour awaits');
 const enterButton=document.getElementById('enter-world');
 enterButton.disabled=false;
-enterButton.addEventListener('click',()=>{if(enteredWorld||enterButton.disabled)return;enteredWorld=true;keys.clear();document.getElementById('loading').remove();renderer.domElement.tabIndex=-1;renderer.domElement.focus({preventScroll:true})},{once:true});
+enterButton.addEventListener('click',()=>{if(enteredWorld||enterButton.disabled)return;enteredWorld=true;keys.clear();document.getElementById('loading').remove();welcomePlayer();renderer.domElement.tabIndex=-1;renderer.domElement.focus({preventScroll:true})},{once:true});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});window.harbour={camera,renderer,scene,water,trees,batchReport,quality,reset,setView,quest,flock,characters,landscape,harbourLife,activity,getState:()=>({quest:quest.getState(),birds:flock.birds.length,cityHouses:landscape.houses,mountainRanges:landscape.ranges,position:camera.position.toArray(),flying,jumpHeight,jumpVelocity,grounded:!flying&&jumpHeight===0,frames,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,materials:materialStats(),reflectionPasses:water.reflectionPasses,trees:trees.length,assets:assets.loaded,quality:quality.get()})};
 
