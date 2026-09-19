@@ -1,0 +1,80 @@
+[
+  {
+    "id": "ship_pinnace",
+    "url": "https://polyhaven.com/a/ship_pinnace",
+    "license": "CC0"
+  },
+  {
+    "id": "marble_bust_01",
+    "url": "https://polyhaven.com/a/marble_bust_01",
+    "license": "CC0"
+  },
+  {
+    "id": "wooden_barrels_01",
+    "url": "https://polyhaven.com/a/wooden_barrels_01",
+    "license": "CC0"
+  },
+  {
+    "id": "wooden_crate_01",
+    "url": "https://polyhaven.com/a/wooden_crate_01",
+    "license": "CC0"
+  },
+  {
+    "id": "seaworn_stone_tiles",
+    "url": "https://polyhaven.com/a/seaworn_stone_tiles",
+    "license": "CC0"
+  },
+  {
+    "id": "large_sandstone_blocks_01",
+    "url": "https://polyhaven.com/a/large_sandstone_blocks_01",
+    "license": "CC0"
+  },
+  {
+    "id": "wooden_rough_planks",
+    "url": "https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0"
+  },
+  {
+    "id": "bark_brown_02",
+    "url": "https://polyhaven.com/a/bark_brown_02",
+    "license": "CC0"
+  },
+  {
+    "id": "pine_tree_01",
+    "url": "https://polyhaven.com/a/pine_tree_01",
+    "license": "CC0",
+    "used": "Twig texture only"
+  },
+  {
+    "id": "rough_linen",
+    "url": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0"
+  },
+  {
+    "id": "tree_small_02",
+    "url": "https://polyhaven.com/a/tree_small_02",
+    "license": "CC0"
+  },
+  {
+    "id": "quaternius-universal-base-characters",
+    "url": "https://quaternius.com/packs/universalbasecharacters.html",
+    "author": "Quaternius",
+    "license": "CC0 1.0",
+    "modifications": "Selected clothing and hairstyles, head-only base mesh extraction, texture resizing, shared rigs and geometry, relaxed poses and idle animation."
+  },
+  {
+    "id": "quaternius-modular-character-outfits-fantasy",
+    "url": "https://quaternius.com/packs/modularcharacteroutfitsfantasy.html",
+    "author": "Quaternius",
+    "license": "CC0 1.0",
+    "modifications": "Selected clothing and hairstyles, head-only base mesh extraction, texture resizing, shared rigs and geometry, relaxed poses and idle animation."
+  },
+  {
+    "name": "Universal Animation Library Standard",
+    "creator": "Quaternius",
+    "license": "CC0",
+    "url": "https://quaternius.itch.io/universal-animation-library",
+    "downloadSource": "https://opengameart.org/content/universal-animation-library",
+    "use": "Walking, idle and talking animation tracks"
+  }
+]

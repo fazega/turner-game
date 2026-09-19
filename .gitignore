@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.wrangler/
+**/*.br
+/*.png
+/*verification.json
+/performance.json
+/loading-performance.json
+/living-harbour-check.json
+.env
+.env.*

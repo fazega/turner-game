@@ -1,0 +1,11 @@
+{
+  "name": "turner-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Last Light — an explorable painted harbour",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "start": "node server.cjs"
+  },
+  "engines": { "node": ">=20" }
+}
