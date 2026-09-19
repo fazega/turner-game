@@ -1,4 +1,3 @@
-import {dressCharacter} from './period-clothing.js';
 import {createEclipse} from './eclipse.js';
 import {movementCodes} from './keyboard.js';
 import * as T from './three.module.js';
@@ -10,19 +9,18 @@ export function createQuest({scene,camera,characters,canvas,clearMovement,setVie
  let current=null,hovered=null,toastTimer,oldFocus=null;
  const npcs=[],hitboxes=[],ray=new T.Raycaster(),mouse=new T.Vector2(2,2);
  const targetIds=['mira','tomas','inez','mira','mira','mira',null];
- const objectives=['Speak to Mira beside the gathering on the quay.','Ask Tomas, at the western cargo quay, what the eclipse means to sailors.','Ask Inez, along the eastern arcade, what causes an eclipse.','Return to Mira and share what you have learned.','Use Mira’s glasses to study the eclipse.','Tell Mira about the small world you spotted.','An unexpected discovery. Mira welcomes you as her pupil.'];
+ const objectives=['Speak to Mira, the harbour warden, beside the quay.','Ask Tomas, at the western cargo quay, what the eclipse means to sailors.','Ask Inez, along the eastern arcade, what causes an eclipse.','Return to Mira and share what you have learned.','Use Mira’s glasses to study the eclipse.','Tell Mira about the small world you spotted.','An unexpected discovery. Mira welcomes you as her pupil.'];
  const inventory=['Empty','A question for the harbour','Tomas’s account','Two perspectives on the eclipse','Mira’s eclipse glasses','Mira’s eclipse glasses','Mira’s eclipse glasses · An invitation to return'];
  function label(name,role){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.textAlign='center';ctx.shadowColor='#182018';ctx.shadowBlur=8;ctx.fillStyle='#f9e8bc';ctx.font='32px Georgia';ctx.fillText(name,256,50);ctx.font='18px Arial';ctx.fillStyle='#dfd3b6';ctx.fillText(role,256,82);const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;const s=new T.Sprite(new T.SpriteMaterial({map,transparent:true,depthTest:true,depthWrite:false}));s.scale.set(2.8,.7,1);s.position.y=2.63;return s}
  function character(id,name,role,x,z,color,hat){
   const root=characters.create(id);root.name=name+' · '+role;root.position.set(x,.32,z);scene.add(root);
-  dressCharacter(root,id==='tomas'?'man':'woman',id==='mira'?2:id==='inez'?3:1,'watching');
   const plate=label(name,role);root.add(plate);
   const mark=new T.Mesh(new T.OctahedronGeometry(.09),new T.MeshBasicMaterial({color:'#ebc878'}));mark.name='Quest diamond';mark.position.y=2.22;root.add(mark);
 
   const hit=new T.Mesh(new T.BoxGeometry(.8,2.1,.7),new T.MeshBasicMaterial({visible:false}));hit.position.y=1.05;root.add(hit);hit.userData.id=id;hitboxes.push(hit);
   const npc={id,name,role,root,plate,mark,hit};npcs.push(npc);return npc;
  }
- character('mira','Mira','Harbor warden',1,29,'#345856',true);
+ character('mira','Mira','Harbor warden',4,20,'#345856',true);
  character('tomas','Tomas','Shipwright',-57,18,'#795039',false);
  character('inez','Inez','Chartmaker',33.2,-33.6,'#76545a',true);
  const eclipse=createEclipse({scene,camera,setView,getFlying,onObserved:()=>{if(stage===4){stage=5;save();sync();show(npcs[0])}}});

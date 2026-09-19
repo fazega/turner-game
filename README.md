@@ -14,7 +14,7 @@ Open http://127.0.0.1:8765. To restart the server, run `node server.cjs` from th
 
 ## Play
 
-Walk toward **Mira**, beside the gathering on the quay. Ask **Tomas** what the approaching eclipse means to sailors, then ask **Inez** what causes it. Report both perspectives to Mira to receive her eclipse glasses. The glasses zoom toward the Sun; watch for a small ringed world and tell Mira what you see. She welcomes you as a future pupil. This discovery is a fantasy story in a harbour inspired by Claude Lorrain’s *Port Scene with the Villa Medici*, rather than a reconstruction of a historical astronomical event.
+Walk toward **Mira**, beside the quay. Ask **Tomas** what the approaching eclipse means to sailors, then ask **Inez** what causes it. Report both perspectives to Mira to receive her eclipse glasses. The glasses zoom toward the Sun; watch for a small ringed world and tell Mira what you see. She welcomes you as a future pupil. This discovery is a fantasy story in a harbour inspired by Claude Lorrain’s *Port Scene with the Villa Medici*, rather than a reconstruction of a historical astronomical event.
 
 The six-step quest saves in this browser. Movement closes ordinary dialogue; **Esc** lowers the glasses and restores the previous viewpoint. Completed players may return to Mira to look again.
 
@@ -56,4 +56,3 @@ The southwest garden edge transitions to a sloped sandy beach with a wet-sand ba
 
 The opening screen displays the supplied painting while assets and shaders load. ENTER unlocks after the first scene render; movement and interactions begin only after entry. The screen is shown on every load so returning players also enter deliberately after loading finishes.
 
-The opening composition groups twenty additional spectators and working figures around a landing boat, nets, oars, clay bowls, sailcloth and tied cargo. Women wear pleated overskirts, some observers wear capes or hats, and the groups watch, point, converse or kneel at their work.
