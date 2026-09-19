@@ -1,3 +1,4 @@
+import {movementCodes} from './keyboard.js';
 import * as T from './three.module.js';
 import { batchStatic } from './batching.js';
 import { material } from './materials.js';
@@ -68,7 +69,7 @@ export function createQuest({scene,camera,characters,canvas,clearMovement}){
  function interact(click=false){if(!dialog.hidden)return;let npc=click?pick():npcs.reduce((a,n)=>!a||distance(n)<distance(a)?n:a,null);if(npc&&(click||distance(npc)<=4.8))show(npc)}
  function keydown(e){
   if(!dialog.hidden){
-   if(['KeyW','KeyA','KeyS','KeyD','KeyZ','KeyQ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyC'].includes(e.code)||['z','q','s','d'].includes(e.key.toLowerCase())){close();return false}
+   if(movementCodes.has(e.code)||['Space','KeyC'].includes(e.code)){close();return false}
    if(e.code==='Escape'){close();return true}
    if(e.code==='Tab'){const bs=[...$('choices').children],i=bs.indexOf(document.activeElement);bs[(i+(e.shiftKey?-1:1)+bs.length)%bs.length].focus();e.preventDefault()}
    const digit=/^(?:Digit|Numpad)([1-4])$/.exec(e.code);if(digit&&!e.repeat){e.preventDefault();$('choices').children[Number(digit[1])-1]?.click()}

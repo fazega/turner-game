@@ -18,7 +18,7 @@ Walk toward **Mira**, the harbor warden beside the lantern. Click a nearby named
 
 ## Controls
 
-- **Z Q S D**: move on a French keyboard. **Shift**: move at 7 m/s (normal walking: 4.6 m/s).
+- **W A S D / Z Q S D**: move. The Commands panel automatically detects QWERTY or AZERTY using the browser keyboard map, with actual key presses as a fallback. Arrow keys also work. **Shift**: move at 7 m/s (normal walking: 4.6 m/s).
 - **Drag the mouse**: look around. The fantasy cursor stays visible; the game does not capture or hide it.
 - **Click a person / E**: interact within reach.
 - **Esc**: close dialogue. **Tab / Enter** or **1 / 2** also operate dialogue choices.
