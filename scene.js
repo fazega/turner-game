@@ -1,3 +1,4 @@
+import {preloadFish} from './fish-models.js';
 import {finishRope} from './prop-finishes.js';
 import {createTouchControls} from './touch-controls.js';
 import {createCompass} from './compass.js';
@@ -26,7 +27,7 @@ T.Cache.enabled=true;
 installKeyboardLabels();
 function loading(value,text){const bar=document.getElementById('load-progress');if(bar)bar.value=value;const label=document.getElementById('load-message');if(label)label.textContent=text}
 let progress=2;T.DefaultLoadingManager.onProgress=(url,done,total)=>{progress=Math.max(progress,Math.round(done/total*65));loading(progress,'Loading the waterfront · '+progress+'%')};
-const [assets,characters]=await Promise.all([loadModelLibrary(),loadCharacters(),preloadPBR(),preloadFoliage()]);
+const [assets,characters]=await Promise.all([loadModelLibrary(),loadCharacters(),preloadPBR(),preloadFoliage(),preloadFish()]);
 loading(70,'Building the harbour and city');await new Promise(requestAnimationFrame);
 import { createDetailBuilders } from './details.js';
 import { createShipBuilder } from './ships.js';

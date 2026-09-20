@@ -16,3 +16,5 @@ Character models: [Universal Base Characters](https://quaternius.com/packs/unive
 Quaternius Universal Animation Library (Standard), CC0. Walking, idle and talking clips retargeted and reduced to the required tracks. https://quaternius.itch.io/universal-animation-library — downloaded from the creator’s OpenGameArt release: https://opengameart.org/content/universal-animation-library . License bundled in assets/characters/Animation-License.txt.
 
 Opening painting: Claude Lorrain, *Port Scene with the Villa Medici*. Reference image supplied by the user, bundled as assets/harbour-painting.png.
+
+Market fish: **Barramundi Fish**, Microsoft (2017), **CC0 1.0 Universal**, from the Khronos glTF Sample Assets collection: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/BarramundiFish . Licence: https://creativecommons.org/publicdomain/zero/1.0/ . Bundled locally; embedded textures resized from 2048 to 1024 pixels and recompressed; model rotated and scaled to lie on the market counters.
