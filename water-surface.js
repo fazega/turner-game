@@ -1,6 +1,20 @@
 import * as T from './three.module.js';
 import { Water } from './WaterReflection.js';
 
+// Use the shader's displaced surface for small floating props.
+export function sampleWater(x,z,time,target){
+ const sx=x,sz=z;let y=-.35;
+ for(const [dx,dz,length,amplitude,speed] of [[1,.35,13,.17,1.04],[-.4,1,7.8,.09,1.47],[.7,-.6,4.1,.035,1.83],[-1,-.8,2.6,.015,2.25]]){
+  const n=Math.hypot(dx,dz),a=dx/n,b=dz/n,phase=6.2831853/length*(a*x+b*z)-time*speed;
+  y+=amplitude*Math.sin(phase);x+=a*amplitude*.35*Math.cos(phase);z+=b*amplitude*.35*Math.cos(phase);
+ }
+ const smooth=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t)};
+ const shore=-96+2*Math.sin((sz-41)*.028)+.8*Math.sin(sz*.083);
+ const mask=smooth(40,48,sz)*(1-smooth(204,211,sz));
+ const damping=1-mask*(1-(.035+.965*smooth(0,17,Math.abs(sx-shore))));
+ return target.set(sx+(x-sx)*damping,-.35+(y+.35)*damping,sz+(z-sz)*damping);
+}
+
 // Analytic, periodic normal field. Generated once; mipmaps filter tiny ripples.
 function rippleNormals(){
   const size=256,data=new Uint8Array(size*size*4);

@@ -78,6 +78,14 @@ const activity=addHarbourActivity({scene,characters,details,box,cyl,line,wood,ro
 const flock=createBirds(scene);
 for(const t of trees)obstacles.push({x:t.x,z:t.z,w:1.6,d:1.6});
 for(let i=0;i<8;i++)obstacles.push({x:31.8,z:-9-i*5.3,w:.72,d:.72});
+// Capture grounded cargo bounds before static meshes are merged for rendering.
+scene.updateMatrixWorld(true);
+scene.traverse(object=>{
+ if(!object.userData.solidCargo)return;
+ const bounds=new T.Box3().setFromObject(object),size=bounds.getSize(new T.Vector3()),center=bounds.getCenter(new T.Vector3());
+ if(bounds.min.y<.65&&bounds.max.y>.8&&size.x<6&&size.z<6)
+  obstacles.push({x:center.x,z:center.z,w:size.x*.5+.18,d:size.z*.5+.18});
+});
 const canWalk=(x,z)=>x>-82&&x<82&&z<49.4&&(z>11||(x>31&&z>-78))&&!obstacles.some(o=>Math.abs(x-o.x)<o.w&&Math.abs(z-o.z)<o.d);
 function land(){
  if(!canWalk(camera.position.x,camera.position.z)){

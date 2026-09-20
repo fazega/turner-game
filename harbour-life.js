@@ -19,7 +19,7 @@ export function enrichHarbour({scene,details,box,cyl,line,wood,rope,trim,rand}){
  details.crate(36.2,39,.32,.75);details.crate(36.2,39,1.25,.55);details.sack(35.7,41.3);details.barrel(30,40.8,scene,.32,.75);
  for(let i=0;i<8;i++)fruit(36.2+(rand()-.5)*.45,1.34,39+(rand()-.5)*.4,1,.09);
  // Dockside work stations and cargo at intervals, leaving a clear promenade.
- for(const [x,z] of [[-64,14],[-47,25],[-30,18],[4,36],[21,30],[33,-23]]){details.crate(x,z,.32,.8);details.barrel(x+1.2,z,scene,.32,.75);details.sack(x-.8,z+.8);for(let i=0;i<4;i++)box(x+1.1,.38+i*.10,z+1.8,2.8-i*.15,.085,.23,planks);for(let i=0;i<5;i++)details.ring(x+.3,.37+i*.045,z+2,.3-i*.035,.025,rope)}
+ for(const [x,z] of [[-64,14],[-47,25],[-30,18],[4,36],[21,30],[22,36]]){details.crate(x,z,.32,.8);details.barrel(x+1.2,z,scene,.32,.75);details.sack(x-.8,z+.8);for(let i=0;i<4;i++)box(x+1.1,.38+i*.10,z+1.8,2.8-i*.15,.085,.23,planks);for(let i=0;i<5;i++)details.ring(x+.3,.37+i*.045,z+2,.3-i*.035,.025,rope)}
  // Shipwright's trestle bench, tools and rolled canvas near Tomas.
  box(-60,1.05,20.5,3.1,.12,1.0,planks);for(const x of [-61,-59]){line([x-.22,.32,20.2],[x,1.03,20.5],.065,wood);line([x+.22,.32,20.8],[x,1.03,20.5],.065,wood)}for(let i=0;i<4;i++)box(-60,1.15+i*.065,20.5,2.5,.05,.13,wood);line([-59.5,1.35,20.1],[-59,1.35,20.4],.025,wood);box(-59,1.35,20.4,.12,.1,.26,iron);
  // Fishing nets draped over timber frames, with floats and baskets of fish.

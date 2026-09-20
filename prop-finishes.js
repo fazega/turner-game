@@ -7,6 +7,7 @@ const labelMap=new T.CanvasTexture(stampCanvas);labelMap.colorSpace=T.SRGBColorS
 const labelMaterial=new T.MeshStandardMaterial({map:labelMap,roughness:1,polygonOffset:true,polygonOffsetFactor:-1});
 const nailGeometry=new T.SphereGeometry(1,8,6);
 export function finishCargo(model,kind){
+  model.userData.solidCargo=true;model.name=`Harbour ${kind}`;
   model.updateWorldMatrix(true,true);const bounds=new T.Box3().setFromObject(model);const min=model.worldToLocal(bounds.min.clone()),max=model.worldToLocal(bounds.max.clone());
   const w=max.x-min.x,h=max.y-min.y,d=max.z-min.z,cx=(min.x+max.x)/2,cz=(min.z+max.z)/2;
   if(!Number.isFinite(w)||w<.1)return model;

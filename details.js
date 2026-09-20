@@ -108,7 +108,7 @@ export function createDetailBuilders({scene,mesh,box,cyl,line,rand,stone,trim,wo
     cyl(.07,1.26,.02,.07,.025,wood,g,.07,8);return g;
   }
   function crate(x,z,y=.3,size=1,parent=scene){
-    if(assets){const model=assets.crate();model.position.set(x,y,z);model.scale.setScalar(size);parent.add(model);return model;}
+    if(assets){const model=assets.crate();model.position.set(x,y,z);model.scale.setScalar(size);parent.add(model);return finishCargo(model,'crate');}
     const g=new T.Group();g.position.set(x,y,z);g.scale.setScalar(size);parent.add(g);
     box(0,.55,0,1.2,1.1,1,goldwood,g);
     for(let side of [-1,1]){

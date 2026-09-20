@@ -69,7 +69,7 @@ export function createQuest({scene,camera,characters,canvas,clearMovement,setVie
  }
 
  function update(time){eclipse.update(time,stage>=4);if(eclipse.isOpen()){hint.hidden=true;return}hovered=pick();const near=npcs.reduce((a,n)=>!a||distance(n)<distance(a)?n:a,null);const selected=hovered&&distance(hovered)<25?hovered:near&&distance(near)<4.8?near:null;
-  hint.hidden=!dialog.hidden||!selected;if(selected)hint.textContent=distance(selected)<=4.8?`${selected.name} · ${hovered===selected?'Click or ':''}E to talk`:`${selected.name} · move closer (${Math.ceil(distance(selected))} m)`;
+  hint.hidden=!dialog.hidden||!selected;if(selected)hint.textContent=distance(selected)<=4.8?`${selected.name} · ${document.body.classList.contains('touch-enabled')?'Tap to talk':`${hovered===selected?'Click or ':''}E to talk`}`:`${selected.name} · move closer (${Math.ceil(distance(selected))} m)`;
   for(const n of npcs){const d=distance(n);n.plate.visible=d<23;n.plate.material.opacity=Math.min(1,(23-d)/5);n.mark.visible=d<40;n.mark.rotation.y=time;n.mark.position.y=2.22+Math.sin(time*2)*.06;n.mark.material.color.set(n.id===targetIds[stage]?'#76c9d5':'#ebc878');if(d<9){const dx=camera.position.x-n.root.position.x,dz=camera.position.z-n.root.position.z;n.root.rotation.y=Math.atan2(-dx,-dz)}}
 
  }
