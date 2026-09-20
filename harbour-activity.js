@@ -1,12 +1,21 @@
+import {createFishModels} from './fish-models.js';
 import * as T from './three.module.js';
 import {material} from './materials.js';
 export function addHarbourActivity({scene,characters,details,box,cyl,line,wood,rope,trim,rand,obstacles}){
  const actors=[],vendors=[],fishers=[],iron=material('#3b403b',.5),planks=material('#92714e',.9,'timber'),silver=new T.MeshStandardMaterial({color:'#a6b7b0',metalness:.48,roughness:.34}),fin=new T.MeshStandardMaterial({color:'#607e77',metalness:.15,roughness:.5}),eye=new T.MeshStandardMaterial({color:'#1a201b',roughness:.25});
  function actor(kind,x,z,heading=0,scale=1){const root=characters.create(kind,actors.length%3);root.position.set(x,.32,z);root.rotation.y=heading;root.scale.setScalar(scale);root.userData.crowdActivity=true;root.traverse(o=>{if(o.isMesh)o.castShadow=false});scene.add(root);actors.push(root);return root}
- function fish(x,y,z,angle=0,size=1){const root=new T.Group();root.position.set(x,y,z);root.rotation.y=angle;root.scale.setScalar(size);scene.add(root);const body=new T.Mesh(new T.SphereGeometry(1,16,9),silver);body.scale.set(.30,.065,.09);root.add(body);const tail=new T.Mesh(new T.ConeGeometry(.10,.18,3),fin);tail.rotation.z=Math.PI/2;tail.scale.z=.25;tail.position.x=-.33;root.add(tail);for(const side of [-1,1]){const e=new T.Mesh(new T.SphereGeometry(.015,6,4),eye);e.position.set(.20,.055,side*.038);root.add(e)}const dorsal=new T.Mesh(new T.ConeGeometry(.05,.12,3),fin);dorsal.position.set(-.04,.07,0);dorsal.rotation.z=.4;dorsal.scale.z=.3;root.add(dorsal)}
+ const fishModel=createFishModels();
+ function fish(x,y,z,angle=0,size=1){return fishModel(scene,x,y,z,angle,size)}
  function bubble(text){const c=document.createElement('canvas');c.width=768;c.height=128;const g=c.getContext('2d');g.fillStyle='rgba(31,37,29,.88)';g.beginPath();g.roundRect(6,12,756,99,16);g.fill();g.strokeStyle='#bda16b';g.lineWidth=2;g.stroke();g.fillStyle='#f0dfb5';g.font='29px Georgia';g.textAlign='center';g.fillText(text,384,72);const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;return tex}
  // Two busy fish stalls leave the central promenade clear.
  for(const [index,x,z]of [[0,-4,17],[1,-38,16]]){box(x,1.05,z,3.2,.12,1.25,planks);for(const dx of [-1.3,1.3])box(x+dx,.68,z,.10,.70,1.1,wood);for(const dz of [-.58,.58])box(x,1.2,z+dz,3.2,.22,.055,planks);for(const dx of [-1.58,0,1.58])box(x+dx,1.2,z,.05,.22,1.15,planks);for(let i=0;i<14;i++)fish(x-1.15+(i%4)*.68,1.16,z-.34+Math.floor(i/4)*.22,(rand()-.5)*.3,.72+rand()*.22);
+  // Raised end-grain cutting board, forged knife and a shallow salt bowl.
+  box(x+1.16,1.13,z+.22,.58,.045,.48,wood);
+  const blade=box(x+1.14,1.164,z+.22,.24,.008,.055,silver);blade.rotation.y=.4;
+  const handle=box(x+.97,1.164,z+.15,.15,.026,.045,wood);handle.rotation.y=.4;
+  for(let nail=0;nail<2;nail++){const pin=new T.Mesh(new T.SphereGeometry(.008,8,6),iron);pin.position.set(x+.94+nail*.05,1.18,z+.15);scene.add(pin)}
+  const bowl=new T.Mesh(new T.LatheGeometry([new T.Vector2(.02,0),new T.Vector2(.09,.01),new T.Vector2(.14,.085),new T.Vector2(.145,.10),new T.Vector2(.125,.10),new T.Vector2(.085,.025),new T.Vector2(.02,.02)],24),trim);bowl.position.set(x+1.3,1.14,z-.34);scene.add(bowl);
+  for(let j=0;j<8;j++){const salt=new T.Mesh(new T.IcosahedronGeometry(.012,0),trim);salt.position.set(x+1.3+(rand()-.5)*.14,1.18,z-.34+(rand()-.5)*.14);scene.add(salt)}
   details.barrel(x+2.1,z,scene,.32,.65);details.crate(x-2,z+.5,.32,.6);details.sack(x-1.8,z+1.5);for(let j=0;j<3;j++)details.ring(x+2,.4+j*.035,z+1,.27-j*.04,.025,rope);
   const seller=actor(index?'woman':'man',x,z-1.15,Math.PI),customer=actor(index?'man':'woman',x+.75,z+1.8,.1);customer.userData.speaking=true;
   const sayings=index?['Silver bream! Straight from the boats!','A fine supper for two copper!']:['Fresh sardines! The morning catch!','Come closer—see how they shine!'];const maps=sayings.map(bubble),sprite=new T.Sprite(new T.SpriteMaterial({map:maps[0],transparent:true,depthWrite:false}));sprite.position.set(0,2.35,0);sprite.scale.set(4.5,.75,1);seller.add(sprite);vendors.push({root:seller,sprite,maps,phase:index*7});obstacles.push({x,z,w:1.8,d:.85});

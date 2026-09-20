@@ -1,3 +1,4 @@
+import {finishRope} from './prop-finishes.js';
 import {createTouchControls} from './touch-controls.js';
 import {createCompass} from './compass.js';
 import {welcomePlayer} from './welcome.js';
@@ -37,6 +38,7 @@ sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.c
 renderer.info.autoReset=false;
 let seed=147;function rand(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646}const mat=material;const stone=mat('#b5a177',1,'masonry'),trim=mat('#d1b98b',1,'stone'),dark=mat('#494234'),wood=mat('#4a3323',.9,'timber'),goldwood=mat('#806449',.9,'timber'),rope=mat('#716044'),cloth=mat('#d5c49b',1,'canvas'),leaf=mat('#484c2c'),red=mat('#814837');
 function mesh(g,m,x=0,y=0,z=0,parent=scene){const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=!!m.isMeshStandardMaterial;o.receiveShadow=!!m.isMeshStandardMaterial;parent.add(o);return o}function box(x,y,z,w,h,d,m=stone,p=scene){return mesh(new T.BoxGeometry(w,h,d),m,x,y,z,p)}function cyl(x,y,z,r,h,m=stone,p=scene,rt=r,n=10){const geo=new T.CylinderGeometry(rt,r,h,m===trim&&h>2.5&&r>.2&&r<1?48:n);if(m===trim&&h>2.5&&r>.2&&r<1){const v=geo.attributes.position;for(let i=0;i<v.count;i++){const a=Math.atan2(v.getZ(i),v.getX(i)),f=1-.035*(1+Math.cos(a*12));v.setX(i,v.getX(i)*f);v.setZ(i,v.getZ(i)*f)}geo.computeVertexNormals()}return mesh(geo,m,x,y,z,p)}function line(a,b,r=.04,m=rope,p=scene){let d=new T.Vector3().subVectors(new T.Vector3(...b),new T.Vector3(...a));let o=mesh(new T.CylinderGeometry(r,r,d.length(),5),m,0,0,0,p);o.position.copy(new T.Vector3(...a).add(new T.Vector3(...b)).multiplyScalar(.5));o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize());return o}
+finishRope(rope);
 const details=createDetailBuilders({scene,mesh,box,cyl,line,rand,stone,trim,wood,goldwood,rope,dark,assets,characters});
 const atmosphere=createAtmosphere(scene);
 const water=createWater(scene);

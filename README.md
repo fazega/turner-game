@@ -58,3 +58,5 @@ The opening screen displays the supplied painting while assets and shaders load.
 
 
 On phones and tablets with a primary touch pointer, a directional pad and jump button appear after entry. Drag the scene with another finger to look around while moving. Tap nearby characters to speak. The controls hide on desktop and during eclipse viewing.
+
+The fish stalls use three shared detailed fish models with scale textures, forked tails, fin rays, gill markings and layered eyes. Cargo has shipping labels and metal fasteners; barrels have rivets; sacks have stitched seams; rope and fruit use additional surface detail. Market counters include cutting boards, knives and salt bowls. These details are generated locally and use shared materials and static batching.

@@ -1,3 +1,4 @@
+import {finishCargo} from './prop-finishes.js';
 import * as T from './three.module.js';
 import { material } from './materials.js';
 import { foliageMaterials } from './foliage.js';
@@ -9,8 +10,8 @@ export function createDetailBuilders({scene,mesh,box,cyl,line,rand,stone,trim,wo
   const treeRecords=[];
   const sphereGeometry=new T.SphereGeometry(1,10,7);
   function ellipsoid(x,y,z,sx,sy,sz,m,parent=scene){let o=mesh(sphereGeometry.clone(),m,x,y,z,parent);o.scale.set(sx,sy,sz);return o}
-  function curve(points,r,m,parent=scene){return mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),Math.max(10,points.length*5),r,5,false),m,0,0,0,parent)}
-  function ring(x,y,z,r,t,m,parent=scene){let o=mesh(new T.TorusGeometry(r,t,5,18),m,x,y,z,parent);o.rotation.x=Math.PI/2;return o}
+  function curve(points,r,m,parent=scene){return mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),Math.max(10,points.length*5),r,8,false),m,0,0,0,parent)}
+  function ring(x,y,z,r,t,m,parent=scene){let o=mesh(new T.TorusGeometry(r,t,8,32),m,x,y,z,parent);o.rotation.x=Math.PI/2;return o}
   function leafCard(x,y,z,size,index,direction){
     const o=mesh(new T.PlaneGeometry(size*.72,size*1.44),foliage[index%4],x,y,z);
     if(direction)o.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),direction.normalize());
@@ -97,7 +98,7 @@ export function createDetailBuilders({scene,mesh,box,cyl,line,rand,stone,trim,wo
     for(let z=-76;z<9;z+=2.2){box(29.05,-.35,z,.18,.64,2.12,material('#8a8467',1,'stone'));box(29.05,-1.02,z+1.1,.18,.6,2.12,material('#626850',1,'stone'))}
   }
   function barrel(x,z,parent=scene,y=.3,scale=1){
-    if(assets){const model=assets.barrel();model.position.set(x,y,z);model.scale.setScalar(scale);parent.add(model);return model;}
+    if(assets){const model=assets.barrel();model.position.set(x,y,z);model.scale.setScalar(scale);parent.add(model);return finishCargo(model,'barrel');}
     const g=new T.Group();g.position.set(x,y,z);g.scale.setScalar(scale);parent.add(g);
     const points=[new T.Vector2(.38,0),new T.Vector2(.44,.12),new T.Vector2(.50,.6),new T.Vector2(.46,1.1),new T.Vector2(.38,1.25)];
     mesh(new T.LatheGeometry(points,16),goldwood,0,0,0,g);
@@ -129,6 +130,7 @@ export function createDetailBuilders({scene,mesh,box,cyl,line,rand,stone,trim,wo
     }geo.computeVertexNormals();mesh(geo,fabric,0,0,0,g);
     curve([[-.025,.29,-.64],[-.32,.33,-.3],[-.38,.34,0],[-.31,.32,.35],[0,.28,.66]],.008,rope,g);
     cyl(0,.28,.66,.095,.16,fabric,g,.045,10).rotation.x=Math.PI/2;
+    for(let i=0;i<15;i++){const t=i/14,z=-.55+t*1.1,x=-.36*Math.sin(Math.PI*t);curve([[x-.012,.342,z-.014],[x+.02,.355,z],[x+.035,.339,z+.014]],.0035,rope,g)}
     const knot=ring(0,.28,.68,.065,.016,rope,g);knot.rotation.x=0;
     return g;
   }

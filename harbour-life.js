@@ -1,8 +1,10 @@
+import {fruitSkin} from './prop-finishes.js';
 import * as T from './three.module.js';
 import {material} from './materials.js';
 export function enrichHarbour({scene,details,box,cyl,line,wood,rope,trim,rand}){
  const iron=new T.MeshStandardMaterial({color:'#262b29',metalness:.8,roughness:.55}),brass=new T.MeshStandardMaterial({color:'#a48749',metalness:.65,roughness:.36}),planks=material('#896a48',.9,'timber'),red=material('#90392b',.45),orange=material('#d39231',.6),green=material('#78963e',.5),purple=material('#514156',.45),leaf=material('#43592b',.9);
- const sphere=new T.SphereGeometry(1,12,9);function fruit(x,y,z,kind,r=.10){const m=new T.Mesh(sphere,[red,orange,green,purple][kind]);m.position.set(x,y,z);m.scale.set(r,kind===2?r*1.25:r,r);m.castShadow=true;scene.add(m);if(kind!==1){line([x,y+r*.8,z],[x+.008,y+r*1.22,z],.009,wood);const l=new T.Mesh(new T.SphereGeometry(1,6,4),leaf);l.scale.set(.045,.005,.020);l.position.set(x+.029,y+r,z);l.rotation.z=.3;scene.add(l)}}
+ [red,orange,green,purple].forEach(fruitSkin);
+ const sphere=new T.SphereGeometry(1,24,16);function fruit(x,y,z,kind,r=.10){const m=new T.Mesh(sphere,[red,orange,green,purple][kind]);m.position.set(x,y,z);m.scale.set(r,kind===2?r*1.25:r,r);m.castShadow=true;scene.add(m);if(kind!==1){line([x,y+r*.8,z],[x+.008,y+r*1.22,z],.009,wood);const l=new T.Mesh(new T.SphereGeometry(1,6,4),leaf);l.scale.set(.045,.005,.020);l.position.set(x+.029,y+r,z);l.rotation.z=.3;scene.add(l)}}
  function sign(text,x,y,z,w=1.4,h=.5){const c=document.createElement('canvas');c.width=512;c.height=192;const ctx=c.getContext('2d');ctx.fillStyle='#302b23';ctx.fillRect(0,0,512,192);ctx.strokeStyle='#aa9464';ctx.lineWidth=7;ctx.strokeRect(10,10,492,172);ctx.fillStyle='#f2d9a2';ctx.font='38px Georgia';ctx.textAlign='center';ctx.fillText(text,256,113);const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;const mesh=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map,roughness:1}));mesh.position.set(x,y,z);mesh.rotation.y=Math.PI;scene.add(mesh)}
  // Hand-built produce stall: plank counter, striped sagging linen, scalloped valance.
  const cx=33,cz=39;for(const x of [30.55,35.45])for(const z of [37.5,40.5]){cyl(x,1.95,z,.065,3.3,wood);cyl(x,3.67,z,.085,.15,brass);line([x,3.35,z],[x+(x<33?.65:-.65),2.7,z],.045,wood)}
